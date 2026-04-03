@@ -1,0 +1,82 @@
+unit UnitTelaRemoverProduto;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.DBCtrls, Vcl.StdCtrls, Vcl.Buttons,
+  Vcl.ExtCtrls;
+
+type
+  TTelaRemoverProduto = class(TForm)
+    pnlFundo: TPanel;
+    pnlborda: TPanel;
+    shpCriarProduto: TShape;
+    speedbtn_fechar: TSpeedButton;
+    lblTitulo: TLabel;
+    pnlItens: TPanel;
+    lblNome: TLabel;
+    lbltelefone: TLabel;
+    lblPreco: TLabel;
+    shpSalvar: TShape;
+    shpCancelar: TShape;
+    SpeedbtnSalvar: TSpeedButton;
+    SpeedbtnCancelar: TSpeedButton;
+    shpCor: TShape;
+    lblCategoria: TLabel;
+    cbCategoria: TDBLookupComboBox;
+    cbProduto: TDBLookupComboBox;
+    cbTamanho: TDBLookupComboBox;
+    cbQuantidade: TDBLookupComboBox;
+    procedure FormActivate(Sender: TObject);
+    procedure speedbtn_fecharClick(Sender: TObject);
+    procedure SpeedbtnCancelarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  TelaRemoverProduto: TTelaRemoverProduto;
+
+implementation
+
+{$R *.dfm}
+
+  procedure TTelaRemoverProduto.FormActivate(Sender: TObject);
+  begin
+
+    pnlFundo.Left := Round ((TelaRemoverProduto.Width - pnlFundo.Width)/2);
+    pnlFundo.Top := Round ((TelaRemoverProduto.Height- pnlFundo.Height)/2);
+
+  end;
+
+  procedure TTelaRemoverProduto.SpeedbtnCancelarClick(Sender: TObject);
+  begin
+
+    cbCategoria.KeyValue := null;
+    cbProduto.KeyValue := null;
+    cbTamanho.KeyValue := null;
+    cbQuantidade.KeyValue := null;
+
+
+    TelaRemoverProduto.Close;
+
+  end;
+
+
+
+  procedure TTelaRemoverProduto.speedbtn_fecharClick(Sender: TObject);
+  begin
+
+    cbCategoria.KeyValue := null;
+    cbProduto.KeyValue := null;
+    cbTamanho.KeyValue := null;
+    cbQuantidade.KeyValue := null;
+
+    telaRemoverProduto.Close;
+
+  end;
+
+end.

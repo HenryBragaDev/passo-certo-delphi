@@ -1,0 +1,179 @@
+unit UnitRemoverCliente;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.DBCtrls, Vcl.StdCtrls,
+  Vcl.Buttons, Vcl.ExtCtrls, Data.DB, Data.Win.ADODB;
+
+type
+  TTelaRemoverCliente = class(TForm)
+    pnlFundo: TPanel;
+    pnlborda: TPanel;
+    shpCriarProduto: TShape;
+    speedbtn_fechar: TSpeedButton;
+    lblTitulo: TLabel;
+    pnlItens: TPanel;
+    lblNome: TLabel;
+    lbltelefone: TLabel;
+    lblPreco: TLabel;
+    shpSalvar: TShape;
+    shpCancelar: TShape;
+    SpeedbtnSalvar: TSpeedButton;
+    SpeedbtnCancelar: TSpeedButton;
+    shpCor: TShape;
+    lblCategoria: TLabel;
+    cbCliente: TDBLookupComboBox;
+    cbEmail: TDBLookupComboBox;
+    cbTelefone: TDBLookupComboBox;
+    cbDataCadastro: TDBLookupComboBox;
+
+    ADOQueryCliente_Nome: TADOQuery;
+    DataSourceCliente_Nome: TDataSource;
+
+    ADOQueryCliente_Email: TADOQuery;
+    DataSourceCliente_Email: TDataSource;
+
+    ADOQueryCliente_Telefone: TADOQuery;
+    DataSourceCliente_Telefone: TDataSource;
+
+    ADOQueryCliente_Data: TADOQuery;
+    DataSourceCliente_Data: TDataSource;
+    ADOQueryClienteNome: TADOQuery;
+    DataSourceClienteNome: TDataSource;
+    ADOQueryClienteEmail: TADOQuery;
+    DataSourceClienteEmail: TDataSource;
+    ADOQueryClienteTelefone: TADOQuery;
+    DataSourceClienteTelefone: TDataSource;
+    ADOQueryClienteData: TADOQuery;
+    DataSourceClienteData: TDataSource;
+
+    procedure FormActivate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure SpeedbtnCancelarClick(Sender: TObject);
+    procedure speedbtn_fecharClick(Sender: TObject);
+    procedure cbClienteCloseUp(Sender: TObject);
+    procedure cbEmailCloseUp(Sender: TObject);
+    procedure cbTelefoneCloseUp(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  TelaRemoverCliente: TTelaRemoverCliente;
+
+implementation
+
+{$R *.dfm}
+
+  uses uDMPrincipal;
+
+  procedure TTelaRemoverCliente.FormActivate(Sender: TObject);
+  begin
+    pnlFundo.Left := Round((TelaRemoverCliente.Width - pnlFundo.Width) / 2);
+    pnlFundo.Top := Round((TelaRemoverCliente.Height - pnlFundo.Height) / 2);
+  end;
+
+  procedure TTelaRemoverCliente.FormShow(Sender: TObject);
+  begin
+    ADOQueryClienteNome.Close;
+    ADOQueryClienteNome.SQL.Text :=
+      'SELECT DISTINCT nome_cliente FROM clientes ORDER BY nome_cliente';
+    ADOQueryClienteNome.Open;
+
+    cbCliente.ListSource := DataSourceClienteNome;
+    cbCliente.ListField  := 'nome_cliente';
+    cbCliente.KeyField   := 'nome_cliente';
+
+    cbEmail.KeyValue := Null;
+    cbTelefone.KeyValue := Null;
+    cbDataCadastro.KeyValue := Null;
+  end;
+
+  procedure TTelaRemoverCliente.cbClienteCloseUp(Sender: TObject);
+  begin
+    ADOQueryClienteEmail.Close;
+    ADOQueryClienteEmail.SQL.Text :=
+      'SELECT DISTINCT email FROM clientes WHERE nome_cliente = ? ORDER BY email';
+    ADOQueryClienteEmail.Parameters.Refresh;
+    ADOQueryClienteEmail.Parameters[0].DataType := ftString;
+    ADOQueryClienteEmail.Parameters[0].Value := cbCliente.KeyValue;
+    ADOQueryClienteEmail.Open;
+
+    cbEmail.ListSource := DataSourceClienteEmail;
+    cbEmail.ListField  := 'email';
+    cbEmail.KeyField   := 'email';
+
+    cbEmail.KeyValue := Null;
+    cbTelefone.KeyValue := Null;
+    cbDataCadastro.KeyValue := Null;
+  end;
+
+  procedure TTelaRemoverCliente.cbEmailCloseUp(Sender: TObject);
+  begin
+    ADOQueryClienteTelefone.Close;
+    ADOQueryClienteTelefone.SQL.Text :=
+      'SELECT DISTINCT telefone_cliente FROM clientes ' +
+      'WHERE nome_cliente = ? AND email = ? ORDER BY telefone_cliente';
+    ADOQueryClienteTelefone.Parameters.Refresh;
+    ADOQueryClienteTelefone.Parameters[0].DataType := ftString;
+    ADOQueryClienteTelefone.Parameters[1].DataType := ftString;
+    ADOQueryClienteTelefone.Parameters[0].Value := cbCliente.KeyValue;
+    ADOQueryClienteTelefone.Parameters[1].Value := cbEmail.KeyValue;
+    ADOQueryClienteTelefone.Open;
+
+    cbTelefone.ListSource := DataSourceClienteTelefone;
+    cbTelefone.ListField  := 'telefone_cliente';
+    cbTelefone.KeyField   := 'telefone_cliente';
+
+    cbTelefone.KeyValue := Null;
+    cbDataCadastro.KeyValue := Null;
+  end;
+
+  procedure TTelaRemoverCliente.cbTelefoneCloseUp(Sender: TObject);
+  begin
+    ADOQueryClienteData.Close;
+    ADOQueryClienteData.SQL.Text :=
+      'SELECT DISTINCT datacadastro, ' +
+      'TO_CHAR(datacadastro, ''YYYY-MM-DD'') AS datacadastro_str ' +
+      'FROM clientes ' +
+      'WHERE nome_cliente = ? AND email = ? AND telefone_cliente = ? ' +
+      'ORDER BY datacadastro';
+    ADOQueryClienteData.Parameters.Refresh;
+    ADOQueryClienteData.Parameters[0].DataType := ftString;
+    ADOQueryClienteData.Parameters[1].DataType := ftString;
+    ADOQueryClienteData.Parameters[2].DataType := ftString;
+    ADOQueryClienteData.Parameters[0].Value := cbCliente.KeyValue;
+    ADOQueryClienteData.Parameters[1].Value := cbEmail.KeyValue;
+    ADOQueryClienteData.Parameters[2].Value := cbTelefone.KeyValue;
+    ADOQueryClienteData.Open;
+
+    cbDataCadastro.ListSource := DataSourceClienteData;
+    cbDataCadastro.KeyField   := 'datacadastro';
+    cbDataCadastro.ListField  := 'datacadastro_str';
+
+    cbDataCadastro.KeyValue := Null;
+  end;
+
+  procedure TTelaRemoverCliente.SpeedbtnCancelarClick(Sender: TObject);
+  begin
+    cbCliente.KeyValue := Null;
+    cbEmail.KeyValue := Null;
+    cbTelefone.KeyValue := Null;
+    cbDataCadastro.KeyValue := Null;
+    TelaRemoverCliente.Close;
+  end;
+
+  procedure TTelaRemoverCliente.speedbtn_fecharClick(Sender: TObject);
+  begin
+    cbCliente.KeyValue := Null;
+    cbEmail.KeyValue := Null;
+    cbTelefone.KeyValue := Null;
+    cbDataCadastro.KeyValue := Null;
+    TelaRemoverCliente.Close;
+  end;
+
+end.

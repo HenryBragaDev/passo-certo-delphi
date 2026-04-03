@@ -1,0 +1,214 @@
+unit UnitCriarProduto;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Buttons, Data.DB,
+  Data.Win.ADODB, Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, System.Character;
+
+type
+  TcriarProduto = class(TForm)
+    pnlFundo: TPanel;
+    pnlborda: TPanel;
+    shpCriarProduto: TShape;
+    shpCor: TShape;
+    speedbtn_fechar: TSpeedButton;
+    pnlItens: TPanel;
+    lblNome: TLabel;
+    lblQuantidade: TLabel;
+    lblCategoria: TLabel;
+    lblPreco: TLabel;
+    lblTamanho: TLabel;
+    lblFornecedor: TLabel;
+    shpSalvar: TShape;
+    shpCancelar: TShape;
+    SpeedbtnSalvar: TSpeedButton;
+    SpeedbtnCancelar: TSpeedButton;
+    edtQuantidadeProduto: TEdit;
+    edtTamanhoProduto: TEdit;
+    edtPreco: TEdit;
+    edtNomeProduto: TEdit;
+    edtCategoriaProduto: TEdit;
+    ADOConnectionCriarProduto: TADOConnection;
+    ADOQueryCriarProduto: TADOQuery;
+    ADOQueryCriarProdutonome_produto: TStringField;
+    ADOQueryCriarProdutoquantidade_produto: TIntegerField;
+    ADOQueryCriarProdutocategoria: TStringField;
+    ADOQueryCriarProdutopreco: TFMTBCDField;
+    ADOQueryCriarProdutotamanho_produto: TIntegerField;
+    DataSourceCriarProduto: TDataSource;
+    lblTitulo: TLabel;
+    ADOQueryCriarProdutoid_produto: TAutoIncField;
+    ADOQueryVerificaProduto: TADOQuery;
+    cbFornecedor: TDBLookupComboBox;
+    ADOQueryCriarProdutoid_fornecedor: TStringField;
+    procedure SpeedbtnCancelarClick(Sender: TObject);
+    procedure speedbtn_fecharClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure SpeedbtnSalvarClick(Sender: TObject);
+    procedure edtQuantidadeProdutoKeyPress(Sender: TObject; var Key: Char);
+    procedure edtPrecoKeyPress(Sender: TObject; var Key: Char);
+    procedure edtTamanhoProdutoKeyPress(Sender: TObject; var Key: Char);
+    procedure edtCategoriaProdutoKeyPress(Sender: TObject; var Key: Char);
+
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  criarProduto: TcriarProduto;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitTelaProdutos, uDMPrincipal;
+
+  // Processo para inserir apenas números nos campos numéricos
+  procedure TcriarProduto.edtCategoriaProdutoKeyPress(Sender: TObject; var Key: Char);
+  begin
+    if not (Key.IsLetter or (Key = ' ') or (Key = #8)) then
+      Key := #0;
+  end;
+
+  // Processo para inserir apenas números nos campos numéricos
+  procedure TcriarProduto.edtPrecoKeyPress(Sender: TObject; var Key: Char);
+  begin
+    if not (Key in ['0'..'9', ',', #8]) then
+    Key := #0;
+  end;
+
+  // Processo para inserir apenas números nos campos numéricos
+  procedure TcriarProduto.edtQuantidadeProdutoKeyPress(Sender: TObject;
+  var Key: Char);
+  begin
+    if not (Key in ['0'..'9', #8]) then
+    Key := #0;
+  end;
+
+  // Processo para inserir apenas números nos campos numéricos
+  procedure TcriarProduto.edtTamanhoProdutoKeyPress(Sender: TObject;
+  var Key: Char);
+  begin
+    if not (Key in ['0'..'9', #8]) then
+    Key := #0;
+  end;
+
+// Processo para centralizar a tela
+  procedure TcriarProduto.FormActivate(Sender: TObject);
+  begin
+    pnlFundo.Left := Round ((criarProduto.Width - pnlFundo.Width)/2);
+    pnlFundo.Top := Round ((criarProduto.Height - pnlFundo.Height)/2);
+
+    // Preencher combobox com fornecedores
+    DMPrincipal.ADOQueryNomeFornecedor.Close;
+    DMPrincipal.ADOQueryNomeFornecedor.SQL.Text := 'SELECT id_fornecedor, nome_fornecedor FROM fornecedores ORDER BY nome_fornecedor';
+    DMPrincipal.ADOQueryNomeFornecedor.Open;
+
+    cbFornecedor.ListSource := DMPrincipal.DataSourceNomeFornecedor;
+    cbFornecedor.ListField := 'nome_fornecedor';
+    cbFornecedor.KeyField := 'id_fornecedor';
+
+  end;
+
+  // Fechar tela cadastro de produtos
+  procedure TcriarProduto.speedbtn_fecharClick(Sender: TObject);
+  begin
+
+    edtNomeProduto.Clear;
+    edtCategoriaProduto.Clear;
+    cbFornecedor.KeyValue:=null;
+    edtQuantidadeProduto.Clear;
+    edtTamanhoProduto.Clear;
+    edtPreco.Clear;
+
+    criarProduto.Close;
+
+  end;
+
+
+  // Fechar tela cadastro de produtos
+  procedure TcriarProduto.SpeedbtnCancelarClick(Sender: TObject);
+  begin
+
+    edtNomeProduto.Clear;
+    edtCategoriaProduto.Clear;
+    cbFornecedor.KeyValue:=null;
+    edtQuantidadeProduto.Clear;
+    edtTamanhoProduto.Clear;
+    edtPreco.Clear;
+
+    criarProduto.Close;
+
+  end;
+
+
+  // Processo para criar produtos
+  procedure TcriarProduto.SpeedbtnSalvarClick(Sender: TObject);
+  var
+  nomeProduto, categoria, nomeFornecedor: String;
+  quantidadeProduto, tamanho: Integer;
+  preco: Double;
+  begin
+    nomeProduto := edtNomeProduto.Text;
+    categoria := edtCategoriaProduto.Text;
+    quantidadeProduto := StrToIntDef(edtQuantidadeProduto.Text, 0);
+    tamanho := StrToIntDef(edtTamanhoProduto.Text, 0);
+    preco := StrToFloatDef(edtPreco.Text, 0);
+    nomeFornecedor := cbFornecedor.text;
+
+    if (nomeProduto = '') or (categoria = '') or
+       (quantidadeProduto = 0) or (preco = 0) or (tamanho = 0) or (cbFornecedor.KeyValue = Null) then
+    begin
+      ShowMessage('Preencha todos os campos corretamente.');
+      Exit;
+    end;
+
+    try
+      ADOQueryVerificaProduto.Close;
+      ADOQueryVerificaProduto.SQL.Text :=
+        'SELECT id_produto FROM produtos WHERE nome_produto = :nome';
+      ADOQueryVerificaProduto.Parameters.ParamByName('nome').Value := nomeProduto;
+      ADOQueryVerificaProduto.Open;
+
+      if not ADOQueryVerificaProduto.IsEmpty then
+      begin
+        ShowMessage('Produto já cadastrado, ID: ' +
+          IntToStr(ADOQueryVerificaProduto.FieldByName('id_produto').AsInteger)+ ', utilize o estoque para fazer alterações em produtos existentes.') ;
+        Exit;
+      end;
+
+      // Inserir novo produto
+      ADOQueryCriarProduto.Close;
+      ADOQueryCriarProduto.SQL.Text :=
+        'INSERT INTO produtos (nome_produto, quantidade_produto, categoria, preco, fornecedor_produto, tamanho_produto) ' +
+        'VALUES (:nome_produto, :quantidade_produto, :categoria, :preco, :fornecedor_produto, :tamanho_produto)';
+      ADOQueryCriarProduto.Parameters.ParamByName('nome_produto').Value := nomeProduto;
+      ADOQueryCriarProduto.Parameters.ParamByName('quantidade_produto').Value := quantidadeProduto;
+      ADOQueryCriarProduto.Parameters.ParamByName('categoria').Value := categoria;
+      ADOQueryCriarProduto.Parameters.ParamByName('preco').Value := preco;
+      ADOQueryCriarProduto.Parameters.ParamByName('fornecedor_produto').Value := nomeFornecedor;
+      ADOQueryCriarProduto.Parameters.ParamByName('tamanho_produto').Value := tamanho;
+      ADOQueryCriarProduto.ExecSQL;
+
+      ShowMessage('Produto cadastrado com sucesso!');
+    except
+      on E: Exception do
+        ShowMessage('Erro ao cadastrar produto: ' + E.Message);
+    end;
+
+    edtNomeProduto.Clear;
+    edtCategoriaProduto.Clear;
+    cbFornecedor.KeyValue:=null;
+    edtQuantidadeProduto.Clear;
+    edtTamanhoProduto.Clear;
+    edtPreco.Clear;
+
+
+  end;
+
+end.

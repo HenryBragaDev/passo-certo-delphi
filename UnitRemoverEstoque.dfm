@@ -1,0 +1,301 @@
+object telaRemoverEstoque: TtelaRemoverEstoque
+  Left = 0
+  Top = 0
+  Align = alClient
+  BorderStyle = bsNone
+  Caption = 'telaRemoverEstoque'
+  ClientHeight = 874
+  ClientWidth = 1119
+  Color = clBackground
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poDesktopCenter
+  OnActivate = FormActivate
+  OnShow = FormShow
+  TextHeight = 15
+  object pnlFundo: TPanel
+    Left = 23
+    Top = 8
+    Width = 1042
+    Height = 769
+    BevelOuter = bvNone
+    Color = clBackground
+    ParentBackground = False
+    TabOrder = 0
+    object pnlborda: TPanel
+      Left = 128
+      Top = 88
+      Width = 801
+      Height = 569
+      BevelOuter = bvNone
+      Color = 13487565
+      ParentBackground = False
+      TabOrder = 0
+      DesignSize = (
+        801
+        569)
+      object shpCriarProduto: TShape
+        Left = 0
+        Top = 55
+        Width = 801
+        Height = 562
+        Brush.Color = clBtnFace
+      end
+      object speedbtn_fechar: TSpeedButton
+        Left = 776
+        Top = 10
+        Width = 17
+        Height = 17
+        Cursor = crHandPoint
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Caption = 'X'
+        Flat = True
+        Font.Charset = ANSI_CHARSET
+        Font.Color = 4802889
+        Font.Height = -33
+        Font.Name = 'Arrial Narrow'
+        Font.Style = []
+        ParentFont = False
+        ParentBiDiMode = False
+        OnClick = speedbtn_fecharClick
+      end
+      object lblTitulo: TLabel
+        Left = 18
+        Top = 15
+        Width = 168
+        Height = 24
+        Caption = 'Remover Estoque'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -20
+        Font.Name = 'Poppins'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object pnlItens: TPanel
+        Left = 0
+        Top = 48
+        Width = 801
+        Height = 566
+        BevelOuter = bvNone
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentBackground = False
+        ParentFont = False
+        TabOrder = 0
+        object lblNome: TLabel
+          Left = 59
+          Top = 103
+          Width = 100
+          Height = 29
+          Caption = 'Produto:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -24
+          Font.Name = 'Poppins'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object lbltelefone: TLabel
+          Left = 59
+          Top = 171
+          Width = 112
+          Height = 29
+          Caption = 'Tamanho:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -24
+          Font.Name = 'Poppins'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object lblPreco: TLabel
+          Left = 59
+          Top = 242
+          Width = 139
+          Height = 29
+          Caption = 'Quantidade:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -24
+          Font.Name = 'Poppins'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object shpSalvar: TShape
+          Left = 387
+          Top = 418
+          Width = 145
+          Height = 41
+          Brush.Color = 7091712
+          Shape = stRoundRect
+        end
+        object shpCancelar: TShape
+          Left = 567
+          Top = 418
+          Width = 138
+          Height = 41
+          Shape = stRoundRect
+        end
+        object SpeedbtnSalvar: TSpeedButton
+          Left = 388
+          Top = 419
+          Width = 142
+          Height = 39
+          Caption = 'Salvar'
+          Flat = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -20
+          Font.Name = 'Poppins'
+          Font.Style = [fsBold]
+          ParentFont = False
+          OnClick = SpeedbtnSalvarClick
+        end
+        object SpeedbtnCancelar: TSpeedButton
+          Left = 569
+          Top = 419
+          Width = 135
+          Height = 39
+          Caption = 'Cancelar'
+          Flat = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -20
+          Font.Name = 'Poppins'
+          Font.Style = [fsBold]
+          ParentFont = False
+          OnClick = SpeedbtnCancelarClick
+        end
+        object shpCor: TShape
+          Left = 0
+          Top = 0
+          Width = 801
+          Height = 1
+          Align = alTop
+          Brush.Color = 15724527
+          ExplicitWidth = 799
+        end
+        object lblCategoria: TLabel
+          Left = 59
+          Top = 39
+          Width = 117
+          Height = 29
+          Caption = 'Categoria:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -24
+          Font.Name = 'Poppins'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object cbCategoria: TDBLookupComboBox
+          Left = 264
+          Top = 38
+          Width = 441
+          Height = 30
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Poppins'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+          OnCloseUp = cbCategoriaCloseUp
+        end
+        object cbProduto: TDBLookupComboBox
+          Left = 264
+          Top = 102
+          Width = 441
+          Height = 30
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Poppins'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+          OnCloseUp = cbProdutoCloseUp
+        end
+        object cbTamanho: TDBLookupComboBox
+          Left = 264
+          Top = 170
+          Width = 97
+          Height = 30
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Poppins'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 2
+          OnCloseUp = cbTamanhoCloseUp
+        end
+        object cbQuantidade: TDBLookupComboBox
+          Left = 264
+          Top = 242
+          Width = 97
+          Height = 30
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Poppins'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 3
+        end
+      end
+    end
+  end
+  object ADOQueryRemover_Categorias: TADOQuery
+    Connection = DMPrincipal.ADOConnectionGeral
+    Parameters = <>
+    Left = 135
+    Top = 752
+  end
+  object DataSourceRemover_Categorias: TDataSource
+    DataSet = ADOQueryRemover_Categorias
+    Left = 183
+    Top = 736
+  end
+  object ADOQueryRemover_Produtos: TADOQuery
+    Connection = DMPrincipal.ADOConnectionGeral
+    Parameters = <>
+    Left = 359
+    Top = 720
+  end
+  object DataSourceRemover_Produtos: TDataSource
+    DataSet = ADOQueryRemover_Produtos
+    Left = 447
+    Top = 736
+  end
+  object ADOQueryRemover_Quantidades: TADOQuery
+    Connection = DMPrincipal.ADOConnectionGeral
+    Parameters = <>
+    Left = 863
+    Top = 712
+  end
+  object DataSourceRemover_Quantidade: TDataSource
+    DataSet = ADOQueryRemover_Quantidades
+    Left = 895
+    Top = 728
+  end
+  object ADOQueryEstoque_Tamanho: TADOQuery
+    Connection = DMPrincipal.ADOConnectionGeral
+    Parameters = <>
+    Left = 599
+    Top = 704
+  end
+  object DataSourceEstoque_Tamanho: TDataSource
+    DataSet = ADOQueryEstoque_Tamanho
+    Left = 663
+    Top = 680
+  end
+end

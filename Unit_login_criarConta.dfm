@@ -1,0 +1,250 @@
+object Form_login_criarConta: TForm_login_criarConta
+  Left = 0
+  Top = 0
+  Align = alClient
+  BorderStyle = bsNone
+  Caption = 'Form_login_criarConta'
+  ClientHeight = 833
+  ClientWidth = 1134
+  Color = clDefault
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poDesktopCenter
+  OnActivate = FormActivate
+  TextHeight = 15
+  object pnl_fundo: TPanel
+    Left = 64
+    Top = 16
+    Width = 1001
+    Height = 761
+    BevelOuter = bvNone
+    Color = clWhite
+    ParentBackground = False
+    TabOrder = 0
+    object titleCadastro: TLabel
+      Left = 360
+      Top = 64
+      Width = 276
+      Height = 35
+      Caption = 'Cadastro de Usu'#225'rio'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -31
+      Font.Name = 'Poppins'
+      Font.Style = []
+      ParentFont = False
+    end
+    object btn_login_voltar: TSpeedButton
+      Left = 456
+      Top = 552
+      Width = 98
+      Height = 41
+      AllowAllUp = True
+      Caption = 'Voltar'
+      Flat = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clHighlight
+      Font.Height = -21
+      Font.Name = 'Poppins'
+      Font.Style = [fsUnderline]
+      ParentFont = False
+      OnClick = btn_login_voltarClick
+    end
+    object pnl_nomeUsuario_criarConta: TPanel
+      Left = 312
+      Top = 248
+      Width = 361
+      Height = 57
+      BevelOuter = bvNone
+      Color = clWhite
+      ParentBackground = False
+      TabOrder = 0
+      object lbl_nomeUsuario_criarConta: TLabel
+        Left = 0
+        Top = 0
+        Width = 361
+        Height = 29
+        Align = alTop
+        Caption = 'Nome de Usu'#225'rio:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 5855577
+        Font.Height = -24
+        Font.Name = 'Poppins'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ExplicitWidth = 204
+      end
+      object pnl_bordaUsuario_criarConta: TPanel
+        Left = 0
+        Top = 55
+        Width = 361
+        Height = 2
+        Align = alBottom
+        BevelOuter = bvNone
+        Color = clDimgray
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = 1
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentBackground = False
+        ParentFont = False
+        TabOrder = 0
+      end
+      object DBedt_nomeUsuario_criarConta: TEdit
+        Left = 0
+        Top = 29
+        Width = 361
+        Height = 26
+        Align = alTop
+        BevelInner = bvNone
+        BevelOuter = bvNone
+        BorderStyle = bsNone
+        CharCase = ecUpperCase
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -20
+        Font.Name = 'Poppins'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 1
+      end
+    end
+    object pnl_lateralEsquerdo: TPanel
+      Left = 0
+      Top = 0
+      Width = 289
+      Height = 761
+      Align = alLeft
+      BevelOuter = bvNone
+      Color = 11974326
+      ParentBackground = False
+      TabOrder = 1
+    end
+    object pnl_lateralDireito: TPanel
+      Left = 707
+      Top = 0
+      Width = 294
+      Height = 761
+      Align = alRight
+      BevelOuter = bvNone
+      Color = 11974326
+      ParentBackground = False
+      TabOrder = 2
+      DesignSize = (
+        294
+        761)
+      object speedbtn_fechar: TSpeedButton
+        Left = 272
+        Top = 8
+        Width = 17
+        Height = 17
+        Cursor = crHandPoint
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Caption = 'X'
+        Flat = True
+        Font.Charset = ANSI_CHARSET
+        Font.Color = 4802889
+        Font.Height = -33
+        Font.Name = 'Arial Narrow'
+        Font.Style = []
+        ParentFont = False
+        ParentBiDiMode = False
+        OnClick = speedbtn_fecharClick
+      end
+    end
+    object pnl_senha_criarConta: TPanel
+      Left = 312
+      Top = 344
+      Width = 361
+      Height = 57
+      BevelOuter = bvNone
+      Color = clWhite
+      ParentBackground = False
+      TabOrder = 3
+      object lbl_senha_criarConta: TLabel
+        Left = 0
+        Top = 0
+        Width = 361
+        Height = 29
+        Align = alTop
+        Caption = 'Senha:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 5855577
+        Font.Height = -24
+        Font.Name = 'Poppins'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ExplicitWidth = 79
+      end
+      object pnl_borda_senha_criarConta: TPanel
+        Left = 0
+        Top = 55
+        Width = 361
+        Height = 2
+        Align = alBottom
+        BevelOuter = bvNone
+        Color = clDimgray
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = 1
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentBackground = False
+        ParentFont = False
+        TabOrder = 0
+      end
+      object DBedt_login_criarConta: TEdit
+        Left = 0
+        Top = 32
+        Width = 361
+        Height = 23
+        Align = alBottom
+        BevelInner = bvNone
+        BevelOuter = bvNone
+        BorderStyle = bsNone
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -20
+        Font.Name = 'Poppins'
+        Font.Style = []
+        ParentFont = False
+        PasswordChar = '*'
+        TabOrder = 1
+      end
+    end
+    object pnl_speedbtn_criarConta: TPanel
+      Left = 552
+      Top = 552
+      Width = 121
+      Height = 41
+      BevelOuter = bvNone
+      Color = 7091712
+      ParentBackground = False
+      TabOrder = 4
+      object btn_criarConta: TSpeedButton
+        Left = 0
+        Top = 0
+        Width = 121
+        Height = 41
+        Align = alClient
+        Caption = 'Criar Conta'
+        Flat = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBackground
+        Font.Height = -21
+        Font.Name = 'Poppins'
+        Font.Style = []
+        ParentFont = False
+        OnClick = btn_criarContaClick
+        ExplicitTop = 8
+        ExplicitWidth = 162
+        ExplicitHeight = 33
+      end
+    end
+  end
+end

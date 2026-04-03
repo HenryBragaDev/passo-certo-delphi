@@ -1,0 +1,172 @@
+unit UnitTelaEstoque;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.Imaging.pngimage,
+  Vcl.ExtCtrls, Vcl.StdCtrls;
+
+type
+  TTelaEstoque = class(TForm)
+    pnlFundo: TPanel;
+    lblEscrita2: TLabel;
+    imgIcone: TImage;
+    lblEscrita: TLabel;
+    speedbtn_fechar: TSpeedButton;
+    lbl_nomeUsuario: TLabel;
+    imgSino: TImage;
+    lblDate: TLabel;
+    lblTime: TLabel;
+    pnlLateral: TPanel;
+    pnlInicio: TPanel;
+    SpdbtnInicio: TSpeedButton;
+    imgInicio: TImage;
+    pnlProdutos: TPanel;
+    SpdbtnProdutos: TSpeedButton;
+    imgProdutos: TImage;
+    pnlVendas: TPanel;
+    SpdbtnVendas: TSpeedButton;
+    imgVendas: TImage;
+    pnlClientes: TPanel;
+    SpdbtnClientes: TSpeedButton;
+    imgClientes: TImage;
+    pnlFornecedores: TPanel;
+    SpdbtnFornecedores: TSpeedButton;
+    imgFornecedores: TImage;
+    pnlEstoque: TPanel;
+    SpeedButton1: TSpeedButton;
+    imgEstoque: TImage;
+    tmr: TTimer;
+    pnlFundoCategorias: TPanel;
+    shpEstoque: TShape;
+    lblTitulo: TLabel;
+    shpCriarProduto: TShape;
+    SpdbtnCriarCliente: TSpeedButton;
+    shpRemover: TShape;
+    SpeedButton2: TSpeedButton;
+    procedure FormShow(Sender: TObject);
+    procedure speedbtn_fecharClick(Sender: TObject);
+    procedure tmrTimer(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure SpdbtnInicioClick(Sender: TObject);
+    procedure SpdbtnProdutosClick(Sender: TObject);
+    procedure SpdbtnVendasClick(Sender: TObject);
+    procedure SpdbtnClientesClick(Sender: TObject);
+    procedure SpdbtnFornecedoresClick(Sender: TObject);
+    procedure SpdbtnCriarClienteClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  TelaEstoque: TTelaEstoque;
+
+implementation
+
+{$R *.dfm}
+
+  uses uDMPrincipal, UnitGlobais, UnitTelaInicial, UnitTelaProdutos,
+  UnitTelaVendaspas, UnitTelaCliente, UnitTelaFornecedore, UnitAdicionarEstoque;
+
+
+
+  procedure TTelaEstoque.FormActivate(Sender: TObject);
+  begin
+    pnlFundo.Left := Round ((TelaEstoque.Width - pnlFundo.Width)/2);
+    pnlFundo.Top := Round ((TelaEstoque.Height - pnlFundo.Height)/2);
+  end;
+
+
+
+  procedure TTelaEstoque.FormShow(Sender: TObject);
+  var
+
+    nomeFormatado: String;
+    nomeTitulo: String;
+    nomeMinusculo:String;
+
+  //Formatação do nome para exibição
+  begin
+
+    nomeFormatado:= AnsiLowerCase(UsuarioLogado);
+    nomeMinusculo:= AnsiLowerCase(Copy(UsuarioLogado, 2));
+    nomeTitulo:= AnsiUpperCase(Copy(nomeFormatado, 1,1));
+    lbl_nomeUsuario.Caption:= 'Olá, '+ nomeTitulo + nomeMinusculo +'!';
+
+  end;
+
+
+
+  procedure TTelaEstoque.SpdbtnClientesClick(Sender: TObject);
+  begin
+    TelaCliente.show;
+    TelaEstoque.Hide;
+  end;
+
+
+
+  procedure TTelaEstoque.SpdbtnCriarClienteClick(Sender: TObject);
+  begin
+    telaAdicionarEstoque.show
+  end;
+
+
+  procedure TTelaEstoque.SpdbtnFornecedoresClick(Sender: TObject);
+  begin
+    TelaFornecedor.show;
+    TelaEstoque.Hide;
+  end;
+
+
+
+  procedure TTelaEstoque.SpdbtnInicioClick(Sender: TObject);
+  begin
+    telaInicial.show;
+    telaEstoque.Hide;
+  end;
+
+
+
+  procedure TTelaEstoque.SpdbtnProdutosClick(Sender: TObject);
+  begin
+    TelaProdutos.show;
+    TelaEstoque.Hide;
+  end;
+
+
+
+  procedure TTelaEstoque.SpdbtnVendasClick(Sender: TObject);
+  begin
+    telaVendas.show;
+    telaEstoque.Hide;
+  end;
+
+
+
+  procedure TTelaEstoque.speedbtn_fecharClick(Sender: TObject);
+  begin
+    Application.Terminate;
+  end;
+
+
+
+  procedure TTelaEstoque.tmrTimer(Sender: TObject);
+  var
+    DataFormatada:String;
+    HoraFormatada:String;
+
+  begin
+    //Formatação do dateTime para exibição no label
+    DataFormatada:= FormatDateTime('dd "de" mmmm yyyy', date);
+    HoraFormatada:= FormatDateTime('hh:nn', time);
+
+    lbltime.Caption:=HoraFormatada;
+    lbldate.Caption:=DataFormatada;
+  end;
+
+
+
+end.

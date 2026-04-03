@@ -1,0 +1,68 @@
+unit UnitRemoverEstoque;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Buttons,
+  Vcl.ExtCtrls;
+
+type
+  TtelaRemoverEstoque = class(TForm)
+    pnlFundo: TPanel;
+    pnlborda: TPanel;
+    shpCriarProduto: TShape;
+    speedbtn_fechar: TSpeedButton;
+    lblTitulo: TLabel;
+    pnlItens: TPanel;
+    lblNome: TLabel;
+    lbltelefone: TLabel;
+    lblPreco: TLabel;
+    shpSalvar: TShape;
+    shpCancelar: TShape;
+    SpeedbtnSalvar: TSpeedButton;
+    SpeedbtnCancelar: TSpeedButton;
+    shpCor: TShape;
+    lblCategoria: TLabel;
+    cbCategoria: TDBLookupComboBox;
+    cbProduto: TDBLookupComboBox;
+    cbTamanho: TDBLookupComboBox;
+    cbQuantidade: TDBLookupComboBox;
+    procedure speedbtn_fecharClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure SpeedbtnCancelarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  telaRemoverEstoque: TtelaRemoverEstoque;
+
+implementation
+
+{$R *.dfm}
+
+
+  procedure TtelaRemoverEstoque.FormActivate(Sender: TObject);
+  begin
+    pnlFundo.Left := Round ((TelaRemoverEstoque.Width - pnlFundo.Width)/2);
+    pnlFundo.Top := Round ((TelaRemoverEstoque.Height - pnlFundo.Height)/2);
+  end;
+
+
+
+  procedure TtelaRemoverEstoque.SpeedbtnCancelarClick(Sender: TObject);
+  begin
+    TelaRemoverEstoque.Close;
+  end;
+
+
+
+  procedure TtelaRemoverEstoque.speedbtn_fecharClick(Sender: TObject);
+  begin
+    TelaRemoverEstoque.Close;
+  end;
+
+end.

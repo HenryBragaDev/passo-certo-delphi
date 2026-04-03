@@ -1,0 +1,256 @@
+unit UnitTelaRemoverFornecedor;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.DBCtrls, Vcl.StdCtrls, Vcl.Buttons,
+  Vcl.ExtCtrls, Data.DB, Data.Win.ADODB;
+
+type
+  TTelaRemoverFornecedor = class(TForm)
+    pnlFundo: TPanel;
+    pnlborda: TPanel;
+    shpCriarProduto: TShape;
+    speedbtn_fechar: TSpeedButton;
+    lblTitulo: TLabel;
+    pnlItens: TPanel;
+    lblCnpj: TLabel;
+    lblTamanho: TLabel;
+    lblEmail: TLabel;
+    shpSalvar: TShape;
+    shpCancelar: TShape;
+    SpeedbtnSalvar: TSpeedButton;
+    SpeedbtnCancelar: TSpeedButton;
+    shpCor: TShape;
+    lblFornecedor: TLabel;
+    cbFornecedor: TDBLookupComboBox;
+    cbCnpj: TDBLookupComboBox;
+    cbTelefone: TDBLookupComboBox;
+    cbEmail: TDBLookupComboBox;
+    ADOQueryFornecedor_Nome: TADOQuery;
+    DataSourceFornecedor_Nome: TDataSource;
+    ADOQueryFornecedor_Cnpj: TADOQuery;
+    DataSourceFornecedor_Cnpj: TDataSource;
+    ADOQueryFornecedor_Telefone: TADOQuery;
+    DataSourceFornecedor_Telefone: TDataSource;
+    ADOQueryFornecedor_Email: TADOQuery;
+    DataSourceFornecedor_Email: TDataSource;
+
+    procedure FormActivate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure SpeedbtnCancelarClick(Sender: TObject);
+    procedure speedbtn_fecharClick(Sender: TObject);
+    procedure cbFornecedorCloseUp(Sender: TObject);
+    procedure cbCnpjCloseUp(Sender: TObject);
+    procedure cbTelefoneCloseUp(Sender: TObject);
+    procedure SpeedbtnSalvarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  TelaRemoverFornecedor: TTelaRemoverFornecedor;
+
+implementation
+
+{$R *.dfm}
+
+uses uDMPrincipal, UnitTelaFornecedore;
+
+
+
+  procedure TTelaRemoverFornecedor.FormActivate(Sender: TObject);
+  begin
+    pnlFundo.Left := Round((TelaRemoverFornecedor.Width - pnlFundo.Width) / 2);
+    pnlFundo.Top := Round((TelaRemoverFornecedor.Height - pnlFundo.Height) / 2);
+  end;
+
+
+
+  procedure TTelaRemoverFornecedor.FormShow(Sender: TObject);
+  begin
+    ADOQueryFornecedor_Nome.Close;
+    ADOQueryFornecedor_Nome.SQL.Text :=
+      'SELECT DISTINCT nome_fornecedor FROM fornecedores ORDER BY nome_fornecedor';
+    ADOQueryFornecedor_Nome.Open;
+
+    cbFornecedor.ListSource := DataSourceFornecedor_Nome;
+    cbFornecedor.ListField  := 'nome_fornecedor';
+    cbFornecedor.KeyField   := 'nome_fornecedor';
+
+    cbCnpj.KeyValue := Null;
+    cbTelefone.KeyValue := Null;
+    cbEmail.KeyValue := Null;
+  end;
+
+
+
+  procedure TTelaRemoverFornecedor.cbFornecedorCloseUp(Sender: TObject);
+  begin
+    ADOQueryFornecedor_Cnpj.Close;
+    ADOQueryFornecedor_Cnpj.SQL.Text :=
+      'SELECT DISTINCT cnpj_fornecedor FROM fornecedores WHERE nome_fornecedor = ? ORDER BY cnpj_fornecedor';
+    ADOQueryFornecedor_Cnpj.Parameters.Refresh;
+    ADOQueryFornecedor_Cnpj.Parameters[0].DataType := ftString;
+    ADOQueryFornecedor_Cnpj.Parameters[0].Value := cbFornecedor.KeyValue;
+    ADOQueryFornecedor_Cnpj.Open;
+
+    cbCnpj.ListSource := DataSourceFornecedor_Cnpj;
+    cbCnpj.ListField  := 'cnpj_fornecedor';
+    cbCnpj.KeyField   := 'cnpj_fornecedor';
+
+    cbCnpj.KeyValue := Null;
+    cbTelefone.KeyValue := Null;
+    cbEmail.KeyValue := Null;
+  end;
+
+
+
+  procedure TTelaRemoverFornecedor.cbCnpjCloseUp(Sender: TObject);
+  begin
+    ADOQueryFornecedor_Telefone.Close;
+    ADOQueryFornecedor_Telefone.SQL.Text :=
+      'SELECT DISTINCT telefone_fornecedor FROM fornecedores ' +
+      'WHERE nome_fornecedor = ? AND cnpj_fornecedor = ? ORDER BY telefone_fornecedor';
+    ADOQueryFornecedor_Telefone.Parameters.Refresh;
+    ADOQueryFornecedor_Telefone.Parameters[0].DataType := ftString;
+    ADOQueryFornecedor_Telefone.Parameters[1].DataType := ftString;
+    ADOQueryFornecedor_Telefone.Parameters[0].Value := cbFornecedor.KeyValue;
+    ADOQueryFornecedor_Telefone.Parameters[1].Value := cbCnpj.KeyValue;
+    ADOQueryFornecedor_Telefone.Open;
+
+    cbTelefone.ListSource := DataSourceFornecedor_Telefone;
+    cbTelefone.ListField  := 'telefone_fornecedor';
+    cbTelefone.KeyField   := 'telefone_fornecedor';
+
+    cbTelefone.KeyValue := Null;
+    cbEmail.KeyValue := Null;
+  end;
+
+
+
+  procedure TTelaRemoverFornecedor.cbTelefoneCloseUp(Sender: TObject);
+  begin
+    ADOQueryFornecedor_Email.Close;
+    ADOQueryFornecedor_Email.SQL.Text :=
+      'SELECT email_fornecedor FROM fornecedores ' +
+      'WHERE nome_fornecedor = ? AND cnpj_fornecedor = ? AND telefone_fornecedor = ? ' +
+      'ORDER BY email_fornecedor';
+    ADOQueryFornecedor_Email.Parameters.Refresh;
+    ADOQueryFornecedor_Email.Parameters[0].DataType := ftString;
+    ADOQueryFornecedor_Email.Parameters[1].DataType := ftString;
+    ADOQueryFornecedor_Email.Parameters[2].DataType := ftString;
+    ADOQueryFornecedor_Email.Parameters[0].Value := cbFornecedor.KeyValue;
+    ADOQueryFornecedor_Email.Parameters[1].Value := cbCnpj.KeyValue;
+    ADOQueryFornecedor_Email.Parameters[2].Value := cbTelefone.KeyValue;
+    ADOQueryFornecedor_Email.Open;
+
+    // Configura o DBLookupComboBox corretamente
+    cbEmail.ListSource := DataSourceFornecedor_Email;
+    cbEmail.KeyField   := 'email_fornecedor';
+    cbEmail.ListField  := 'email_fornecedor';
+
+    // Limpa o valor anterior
+    cbEmail.KeyValue := Null;
+
+    // Força preenchimento se houver apenas um resultado
+    if not ADOQueryFornecedor_Email.IsEmpty and (ADOQueryFornecedor_Email.RecordCount = 1) then
+      cbEmail.KeyValue := ADOQueryFornecedor_Email.FieldByName('email_fornecedor').Value;
+  end;
+
+
+
+  procedure TTelaRemoverFornecedor.SpeedbtnCancelarClick(Sender: TObject);
+  begin
+    cbFornecedor.KeyValue := Null;
+    cbCnpj.KeyValue := Null;
+    cbTelefone.KeyValue := Null;
+    cbEmail.KeyValue := Null;
+
+    TelaRemoverFornecedor.Close;
+  end;
+
+
+
+  procedure TTelaRemoverFornecedor.SpeedbtnSalvarClick(Sender: TObject);
+  var
+    idFornecedor: Integer;
+  begin
+    // Verifica se todos os campos foram selecionados
+    if VarIsNull(cbFornecedor.KeyValue) or
+       VarIsNull(cbCnpj.KeyValue) or
+       VarIsNull(cbTelefone.KeyValue) or
+       VarIsNull(cbEmail.KeyValue) then
+    begin
+      ShowMessage('Preencha todos os campos antes de remover o fornecedor.');
+      Exit;
+    end;
+
+    // Busca o ID do fornecedor
+    DMPrincipal.ADOQueryBuscaFornecedor.Close;
+    DMPrincipal.ADOQueryBuscaFornecedor.SQL.Text :=
+      'SELECT id_fornecedor FROM fornecedores ' +
+      'WHERE nome_fornecedor = ? AND cnpj_fornecedor = ? AND telefone_fornecedor = ? AND email_fornecedor = ?';
+    DMPrincipal.ADOQueryBuscaFornecedor.Parameters.Refresh;
+    DMPrincipal.ADOQueryBuscaFornecedor.Parameters[0].DataType := ftString;
+    DMPrincipal.ADOQueryBuscaFornecedor.Parameters[1].DataType := ftString;
+    DMPrincipal.ADOQueryBuscaFornecedor.Parameters[2].DataType := ftString;
+    DMPrincipal.ADOQueryBuscaFornecedor.Parameters[3].DataType := ftString;
+    DMPrincipal.ADOQueryBuscaFornecedor.Parameters[0].Value := cbFornecedor.KeyValue;
+    DMPrincipal.ADOQueryBuscaFornecedor.Parameters[1].Value := cbCnpj.KeyValue;
+    DMPrincipal.ADOQueryBuscaFornecedor.Parameters[2].Value := cbTelefone.KeyValue;
+    DMPrincipal.ADOQueryBuscaFornecedor.Parameters[3].Value := cbEmail.KeyValue;
+    DMPrincipal.ADOQueryBuscaFornecedor.Open;
+
+    if DMPrincipal.ADOQueryBuscaFornecedor.IsEmpty then
+    begin
+      ShowMessage('Fornecedor não encontrado! Verifique os dados selecionados.');
+      Exit;
+    end;
+
+    idFornecedor := DMPrincipal.ADOQueryBuscaFornecedor.FieldByName('id_fornecedor').AsInteger;
+
+    // Confirmação
+    if MessageDlg('Deseja realmente remover este fornecedor?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+      Exit;
+
+    // Executa a exclusão
+    DMPrincipal.ADOQueryRemoverFornecedor.Close;
+    DMPrincipal.ADOQueryRemoverFornecedor.SQL.Text :=
+      'DELETE FROM fornecedores WHERE id_fornecedor = ?';
+    DMPrincipal.ADOQueryRemoverFornecedor.Parameters.Refresh;
+    DMPrincipal.ADOQueryRemoverFornecedor.Parameters[0].DataType := ftInteger;
+    DMPrincipal.ADOQueryRemoverFornecedor.Parameters[0].Value := idFornecedor;
+    DMPrincipal.ADOQueryRemoverFornecedor.ExecSQL;
+
+    ShowMessage('Fornecedor removido com sucesso!');
+
+    // Atualiza o grid principal
+    telaFornecedor.ADOQueryGridFornecedores.Requery;
+
+    close;
+
+    // Limpa os campos
+    cbFornecedor.KeyValue := Null;
+    cbCnpj.KeyValue := Null;
+    cbTelefone.KeyValue := Null;
+    cbEmail.KeyValue := Null;
+
+  end;
+
+
+
+  procedure TTelaRemoverFornecedor.speedbtn_fecharClick(Sender: TObject);
+  begin
+    cbFornecedor.KeyValue := Null;
+    cbCnpj.KeyValue := Null;
+    cbTelefone.KeyValue := Null;
+    cbEmail.KeyValue := Null;
+
+    TelaRemoverFornecedor.Close;
+  end;
+
+end.

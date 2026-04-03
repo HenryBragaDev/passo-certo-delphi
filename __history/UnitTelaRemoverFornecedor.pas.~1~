@@ -1,0 +1,44 @@
+unit UnitTelaRemoverFornecedor;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.DBCtrls, Vcl.StdCtrls, Vcl.Buttons,
+  Vcl.ExtCtrls;
+
+type
+  TTelaRemoverFornecedor = class(TForm)
+    pnlFundo: TPanel;
+    pnlborda: TPanel;
+    shpCriarProduto: TShape;
+    speedbtn_fechar: TSpeedButton;
+    lblTitulo: TLabel;
+    pnlItens: TPanel;
+    lblQuantidade: TLabel;
+    lblTamanho: TLabel;
+    lblDataVenda: TLabel;
+    shpSalvar: TShape;
+    shpCancelar: TShape;
+    SpeedbtnSalvar: TSpeedButton;
+    SpeedbtnCancelar: TSpeedButton;
+    shpCor: TShape;
+    lblCategoria: TLabel;
+    cbProduto: TDBLookupComboBox;
+    cbQuantidade: TDBLookupComboBox;
+    cbTamanho: TDBLookupComboBox;
+    cbDateVenda: TDBLookupComboBox;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  TelaRemoverFornecedor: TTelaRemoverFornecedor;
+
+implementation
+
+{$R *.dfm}
+
+end.
